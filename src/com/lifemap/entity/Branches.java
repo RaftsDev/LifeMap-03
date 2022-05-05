@@ -39,6 +39,23 @@ public class Branches{
 	
 	@Column(name="short_desc")
 	private String shortDesc;
+	
+	@OneToMany(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+			 CascadeType.DETACH, CascadeType.REFRESH})
+	@JoinColumn(name="for_tasks_id")
+	private List<Tasks> tasks;
+	
+	@ManyToMany(fetch=FetchType.LAZY,
+			cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+			 CascadeType.DETACH, CascadeType.REFRESH})
+	@JoinTable(
+			name="users_branches",
+			joinColumns=@JoinColumn(name="branches_id"),
+			inverseJoinColumns=@JoinColumn(name="users_id")
+			)
+	private List<Users> users;
+	
+	
 
 	public Branches() {
 		
@@ -89,6 +106,18 @@ public class Branches{
 	public void setShortDesc(String shortDesc) {
 		this.shortDesc = shortDesc;
 	}
+	
+	
+	
+
+	public List<Users> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<Users> users) {
+		this.users = users;
+	}
+	
 
 	@Override
 	public String toString() {
